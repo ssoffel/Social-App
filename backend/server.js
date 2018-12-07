@@ -4,6 +4,7 @@ var bodyParser = require('body-parser')
 var logger = require('morgan')
 var mongoose = require('mongoose')
 var auth = require('./auth.js')
+var jwt = require('jwt-simple');
  
 
 var app = express()
@@ -15,15 +16,32 @@ app.use(cors())
 app.use(bodyParser.json());
 app.use(logger('dev'))
 
+function checkAuthenticated(req, res, next) {
+    //check if authorization header exists
+    if (!req.header('authorization')){
+        return res.status(401).send({ message: 'Unauthorized. Missing Auth Header' })
+    }  
+    var token = req.header('authorization').split(' ')[1];
+    console.log(token)
+
+    var payload = jwt.decode(token, '123');
+
+    if (!payload) {
+        return res.status(401).send({ message: 'Unauthorized. Auth Header Invalid' })
+    }
+    req.userId = payload.sub
+    next();
+}
+
 app.get('/posts/:id', async (req, res) => {
     var authorId = req.params.id;
     var posts = await Post.find( {authorId} )
     res.send(posts)
 });
 
-app.post('/post', (req, res) => {
+app.post('/post', checkAuthenticated, (req, res) => {
     var postData = req.body
-    postData.authorId = "5c026b44548db24dd469bd51";
+    postData.authorId =  req.userId;
     var post = new Post(postData)
     post.save((err, result) => {
         if (err) {
@@ -37,6 +55,7 @@ app.post('/post', (req, res) => {
 
 app.get('/users', async (req, res) => {
     try {
+        
     var users = await User.find({}, '-password -__v' )
     res.send(users)
     } catch (error){
