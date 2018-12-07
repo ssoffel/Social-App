@@ -15,6 +15,7 @@ export class LoginComponent {
     loginUser() {
 
         this.auth.loginUser(this.loginData);
+        console.log('in loging user after auth')
     }
 
 
