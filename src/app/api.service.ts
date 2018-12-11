@@ -14,7 +14,7 @@ export class ApiService {
     getMessages(authorId) {
         this.http.get<any>(this.path + 'posts/' + authorId).subscribe(res => {
             this.messages = res;
-            console.log('service messages', this.messages);
+              
         });
     }
 
@@ -25,7 +25,7 @@ export class ApiService {
     getUsers() {
         this.http.get<any>(this.path + 'users').subscribe(res => {
             this.users = res;
-            console.log('service users', this.users);
+            
         });
     }
     getProfile(id) {

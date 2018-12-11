@@ -11,6 +11,8 @@
          <input matInput placeholder="Password" required  type='password' [(ngModel)]='loginData.password' name='password'>
        </mat-form-field>
        <button mat-raised-button color='primary' style='float: right'(click)='loginUser()'>Login</button>
-    </form>
+       <br>
+      </form>
+    <em *ngIf='isError === true'><span>Wrong userName or password</span></em>
     </mat-card-content>
   </mat-card>

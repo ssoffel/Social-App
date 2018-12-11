@@ -3,7 +3,7 @@ import { HttpInterceptor } from '@angular/common/http';
 import { AuthService } from './auth.service';
 
 @Injectable()
-export class AuthInterceptorService implements HttpInterceptor{
+export class AuthInterceptorService implements HttpInterceptor {
 
     constructor(private auth: AuthService) {
 
