@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+ 
 
 @Injectable()
 export class ApiService {
@@ -12,12 +14,29 @@ export class ApiService {
     }
 
     getMessages(authorId) {
-        this.http.get<any>(this.path + 'posts/' + authorId).subscribe(res => {
-            this.messages = res;
-              
-        });
+         this.http.get<any>(this.path + 'posts/' + authorId).subscribe(res => {
+            this.messages = res; 
+            
+         });
     }
 
+    
+
+
+/*
+how to set headers 
+    getMessages(authorId) {
+        
+        this.http.get<any>(this.path + 'posts/' + authorId, {
+            headers: new HttpHeaders({
+                'Accept': 'application/json,
+                'Authorization': 'my-token'
+            })
+        }).subscribe(res => {
+           this.messages = res;
+        });
+   }
+*/
     postMessage(message) {
         this.http.post(this.path + 'post', message).subscribe(res => {
         });
@@ -33,3 +52,10 @@ export class ApiService {
     }
 
 }
+
+/*
+    updateMessage(updatedMessage: Massege): Observable<void> {
+        return this.http.put<void>(`/api/messages/$)
+    }
+
+*/

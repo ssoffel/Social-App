@@ -38,9 +38,10 @@ export class ProfileComponent implements OnInit {
     }
 
     ngOnInit() {
-      this.api.getProfile(this.route.snapshot.params.id).subscribe(res => {
-        this.user = res;
-        console.log('this.user:', this.user);
-      });
+      this.api.getProfile(this.route.snapshot.params.id).subscribe(
+        res =>  this.user = res,
+        err => console.log('this is the error', err)
+      
+      );
     }
 }

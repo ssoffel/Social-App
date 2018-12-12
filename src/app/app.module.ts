@@ -18,6 +18,8 @@ import { MessagesComponent } from './messages.component';
 import { ApiService } from './api.service';
 import { AuthService } from './auth.service';
 import { AuthInterceptorService } from './authInterceptor.service';
+import { HttpCachService } from './http-cach.service';
+import { HttpCacheInterceptor } from './http-cache.interceptor';
  
 import { RegisterComponent } from './register.component';
 import { LoginComponent } from './login.component';
@@ -49,11 +51,17 @@ import { PostComponent } from './post.component';
     RouterModule.forRoot(appRoutes, {})
      
   ],
-  providers: [ApiService, AuthService, {
+  providers: [ApiService, AuthService, HttpCachService, {
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptorService,
     multi: true
-  }],
+  },
+  {
+    provide: HTTP_INTERCEPTORS,
+    useClass: HttpCacheInterceptor,
+    multi: true
+  }
+],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
